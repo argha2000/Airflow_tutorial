@@ -30,7 +30,7 @@ t1 = BashOperator(
 
 t2 = BashOperator(
     task_id="make_directory",
-    bash_command="mkdir -p /mnt/c/Airflow_tutorial/test_dir",  # Use the correct WSL2 path here
+    bash_command="mkdir -p /mnt/c/Airflow_tutorial/test_dir",  
     dag=dag
 )
 
