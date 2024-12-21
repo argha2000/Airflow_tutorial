@@ -10,6 +10,8 @@ def data_cleaner():
     def clean_store_location(st_loc):
         return re.sub(r"[^\w\s]","",st_loc).strip()
     
+    # Below iner function cleans the product id column by removing
+    #any non integer values and keeping only integers
     def clean_product_id(pd_id):
         matches = re.findall(r"\d+",pd_id)
 
@@ -17,6 +19,7 @@ def data_cleaner():
             return matches[0]
         return pd_id
     
+    # this function replaces the dollar symbol and returns the value in numeric form
     def replace_dollar(amt):
         return float(amt.replace("$",""))
     
