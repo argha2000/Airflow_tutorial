@@ -1,6 +1,7 @@
 from airflow import DAG
 from datetime import datetime, timedelta
 from airflow.operators.bash_operator import BashOperator
+from src.datacleaner import daat_cleaner
 
 default_args = {
     "owner": "airflow",
@@ -17,3 +18,5 @@ default_args = {
 dag = DAG("store_DAG", default_args=default_args, schedule_interval='@daily',catchup=False)
 
 t1 = BashOperator(task_id="check_file_exists", bash_command="shasum ~/store_files_airflow/raw_store_transactions.csv", retry = 2,retry_delay=timedelta(seconds=15),dag = dag)
+
+t2 = PythonOperator(task_id = "clean_raw_csv",python_callble = data_cleaner,dag = dag)
