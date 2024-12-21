@@ -3,7 +3,7 @@ def data_cleaner():
     import pandas as pd
     import re
 
-    df = pd.read_csv("~/store_files_airflow/raw_store_transaction.csv")
+    df = pd.read_csv("~/store_files_airflow/raw_store_transactions.csv")
 
     # The below inner function removes any special character from the store location column
     # as they are uneeded
@@ -24,9 +24,9 @@ def data_cleaner():
         return float(amt.replace("$",""))
     
     df["STORE_LOCATION"] = df["STORE_LOCATION"].map(lambda x: clean_store_location(x))
-    df["PRODUCT_ID"] = df["PRODCUT_ID"].map(lambda x: clean_product_id(x))
+    df["PRODUCT_ID"] = df["PRODUCT_ID"].map(lambda x: clean_product_id(x))
 
     for to_clean in ["MRP","CP","DISCOUNT","SP"]:
         df[to_clean] = df[to_clean].map(lambda x : replace_dollar(x))
 
-    df.to_csv("~/store_files_airflow/clean_store_transaction",index=False)
+    df.to_csv("~/store_files_airflow/clean_store_transactions.csv",index=False)
