@@ -30,3 +30,5 @@ def data_cleaner():
         df[to_clean] = df[to_clean].map(lambda x : replace_dollar(x))
 
     df.to_csv("~/store_files_airflow/clean_store_transactions.csv",index=False)
+
+
