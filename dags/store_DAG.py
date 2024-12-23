@@ -24,8 +24,21 @@ t1 = BashOperator(task_id="check_file_exists", bash_command="shasum ~/store_file
 t2 = PythonOperator(task_id = "clean_raw_csv",python_callable = data_cleaner,dag = dag)
 
 t3 = MySqlOperator(task_id = "create_table",mysql_conn_id = "mysql_conn",sql="create_table.sql",dag = dag)
+
 t4 =  MySqlOperator(task_id = "load_into_table",mysql_conn_id = "mysql_conn",sql="insert_into_table.sql",dag = dag)
-t5 = MySqlOperator(task_id = "select_from_table",mysql_conn_id = "mysql_conn",sql="select_from_table.sql",dag = dag)
+
+t5 = BashOperator(
+    task_id="remove_previous_files",
+    bash_command="""
+    echo "Current permissions:"
+    ls -la /store_files_mysql/transfer_to_business_files/
+    echo "Attempting to remove files..."
+    rm  /store_files_mysql/transfer_to_business_files/*.csv && echo "Files removed successfully" || echo "Failed to remove files"
+    exit 1
+    """,
+    dag=dag
+)
+t6 = MySqlOperator(task_id = "select_from_table",mysql_conn_id = "mysql_conn",sql="select_from_table.sql",dag = dag)
 
 
-t1 >> t2 >> t3 >>t4 >> t5
+t1 >> t2 >> t3 >>t4 >> t5 >> t6
