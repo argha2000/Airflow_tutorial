@@ -28,7 +28,7 @@ services:
       - EXECUTOR=Local
       - AIRFLOW__SMTP__SMTP_HOST=smtp.gmail.com
       - AIRFLOW__SMTP__SMTP_USER=example@gmail.com
-      - AIRFLOW__SMTP__SMTP_PASSWORD=hdwiondmyyobhlto
+      - AIRFLOW__SMTP__SMTP_PASSWORD= example_password
       - AIRFLOW__SMTP__SMTP_PORT=587
       - AIRFLOW__SMTP__SMTP_MAIL_FROM=Airflow
     volumes:
