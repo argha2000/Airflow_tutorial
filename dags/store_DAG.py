@@ -19,7 +19,7 @@ default_args = {
 
 dag = DAG("store_DAG", default_args=default_args, schedule_interval='@daily',catchup=False,template_searchpath=["/usr/local/airflow/sql_files"])
 
-t1 = BashOperator(task_id="check_file_exists", bash_command="shasum ~/store_files_airflow/raw_store_transactions.csv", retry = 2,retry_delay=timedelta(seconds=15),dag = dag)
+t1 = BashOperator(task_id="check_file_exists", bash_command="shasum /usr/local/airflow/store_files_mysql/raw_store_transactions.csv", retry = 2,retry_delay=timedelta(seconds=15),dag = dag)
 
 t2 = PythonOperator(task_id = "clean_raw_csv",python_callable = data_cleaner,dag = dag)
 
@@ -30,11 +30,12 @@ t4 =  MySqlOperator(task_id = "load_into_table",mysql_conn_id = "mysql_conn",sql
 t5 = BashOperator(
     task_id="remove_previous_files",
     bash_command="""
+    echo "Current user:"
+    whoami
     echo "Current permissions:"
-    ls -la /store_files_mysql/transfer_to_business_files/
+    ls -la /usr/local/airflow/store_files_mysql/transfer_to_business_files/
     echo "Attempting to remove files..."
-    rm  /store_files_mysql/transfer_to_business_files/*.csv && echo "Files removed successfully" || echo "Failed to remove files"
-    exit 1
+    rm  /usr/local/airflow/store_files_mysql/transfer_to_business_files/*.csv && echo "Files removed successfully" || echo "Failed to remove files && exit 1"
     """,
     dag=dag
 )
